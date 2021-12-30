@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Code Editor</title>
 
-<head>
-<title>Code Editor</title>
+    <link rel="stylesheet" href="css/styles.css" />
 
-<link rel="stylesheet" href="css/styles.css">
+    <script src="js/src-min/ace.js"></script>
+    <script src="js/src-min/ext-emmet.js"></script>
+    <script src="https://rawgithub.com/nightwing/emmet-core/master/emmet.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
 
-<script src="js/src-min/ace.js"></script>
-<script src="js/src-min/ext-emmet.js"></script>
-<script src="https://rawgithub.com/nightwing/emmet-core/master/emmet.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-</head>
-
-<body>
-
-<div class="wrapper">
-    <div class="files">
-	<button onclick="addhtmlfile()" class="add-html-file_btn addfile">Add HTML File</button>
-	<button class="add-css-file_btn addfile">Add Css File</button>
-	<button class="add-js-file_btn addfile">Add Javascript File</button>
-	<div class="files-wrapper" id="files">
-	    
-	</div>
-    </div>
-    <div class="editors">
+  <body>
+    <div class="wrapper">
+      <div class="files">
+        <button onclick="addhtmlfile()" class="add-html-file_btn addfile">
+          Add HTML File
+        </button>
+        <button onclick="addcssfile()" class="add-css-file_btn addfile">
+          Add Css File
+        </button>
+        <button onclick="addjsfile()" class="add-js-file_btn addfile">
+          Add Javascript File
+        </button>
+        <div class="files-wrapper" id="files"></div>
+      </div>
+      <div class="editors">
         <div id="editor"></div>
+      </div>
     </div>
-</div>
 
-<script src="js/main.js"></script>
-<script src="js/chrome.js"></script>
-<script src="js/dragdrop.js"></script>
-
-</body>
+    <script src="js/main.js"></script>
+    <script src="js/chrome.js"></script>
+  </body>
 </html>
