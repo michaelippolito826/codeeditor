@@ -14,16 +14,14 @@
   <body>
     <div class="wrapper">
       <div class="files">
-        <button class="add-html-file_btn addfile">
-          Add HTML File
-        </button>
-        <button class="add-css-file_btn addfile">
-          Add CSS File
-        </button>
-        <button class="add-js-file_btn addfile">
-          Add Javascript File
-        </button>
-        <div class="files-wrapper" id="files"></div>
+        <button class="add-html-file_btn addfile">Add HTML File</button>
+        <button class="add-css-file_btn addfile">Add CSS File</button>
+        <button class="add-js-file_btn addfile">Add JS File</button>
+        <div class="files-wrapper" id="files-buttons">
+          <div id="context-menu">
+            <div class="item">Delete</div>
+          </div>
+        </div>
       </div>
       <div id="editors">
         <div id="editor"></div>
@@ -32,6 +30,5 @@
 
     <script src="js/main.js"></script>
     <script src="js/chrome.js"></script>
-
   </body>
 </html>
