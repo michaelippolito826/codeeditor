@@ -204,70 +204,102 @@ const contextmenu = document.getElementById("context-menu");
 const scope = document.getElementsByClassName("filebuttons");
 const body = document.querySelector("body");
 
-scope[0].addEventListener("contextmenu", (e) => {
-  e.preventDefault();
+//find which button is clicked
+for (let i = 0; i < scope.length; i++) {
+  scope[i].addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    contextmenu.classList.add("visible");
 
-  const { clientX: mouseX, clientY: mouseY } = e;
+    //set position of context menu
+    contextmenu.style.left = e.pageX + "px";
+    contextmenu.style.top = e.pageY + "px";
+    contextmenu.style.display = "block";
 
-  contextmenu.style.left = `${mouseX}px`;
-  contextmenu.style.top = `${mouseY}px`;
-
-  contextmenu.classList.add("visible");
-});
-
-scope[0].addEventListener("click", (e) => {
-  if (e.target.offsetParent !== contextmenu) {
+    const { clientX: mouseX, clientY: mouseY } = e;
+    const { normalizeY } = normalizePosition(mouseX, mouseY);
+    contextmenu.style.top = `${normalizeY}px`;
     contextmenu.classList.remove("visible");
-  }
-});
+
+    //set which button is clicked
+    let clicked = e.target;
+    let clickedFile = clicked.innerHTML;
+    let clickedFileExt = clickedFile.split(".");
+    let clickedFileExtension = clickedFileExt.pop();
+    contextmenu.classList.add("visible");
+
+    //set context menu options
+    document.getElementById("delete-file").onclick = function () {
+      if (e.target.classList.contains("filebuttons")) {
+        e.target.remove();
+        //remove file from local storage
+        localStorage.removeItem(clickedFile);
+        contextmenu.classList.remove("visible");
+      }
+    };
+
+    document.getElementById("rename-file").onclick = function () {
+      let newName = prompt("New name of file!");
+      if (newName !== null) {
+        clicked.innerHTML = newName + "." + clickedFileExtension;
+        contextmenu.style.display = "none";
+      }
+    };
+
+    document.getElementById("save-file").onclick = function () {
+      let activeFile = document.getElementById("editors").classList[0];
+      let activeFileName = activeFile.split(".");
+      let activeFileExtension = activeFileName.pop();
+      let activeFileNameOnly = activeFileName.join("");
+
+      if (activeFileExtension === "html") {
+        let html = editor.getValue();
+        let htmlFile = document.getElementById(activeFileNameOnly);
+        htmlFile.innerHTML = html;
+      } else if (activeFileExtension === "css") {
+        let css = editor.getValue();
+        let cssFile = document.getElementById(activeFileNameOnly);
+        cssFile.innerHTML = css;
+      } else if (activeFileExtension === "js") {
+        let js = editor.getValue();
+        let jsFile = document.getElementById(activeFileNameOnly);
+        jsFile.innerHTML = js;
+      }
+      contextmenu.style.display = "none";
+    };
+  });
+
+  const normalizePosition = (mouseX, mouseY) => {
+    const { left: scopeOffsetx, top: scopeOffsety } =
+      scope[i].getBoundingClientRect();
+
+    const scopeX = mouseX - scopeOffsetx;
+    const scopeY = mouseY - scopeOffsety;
+
+    const outOfBoundsX = scopeX + contextmenu.clientWidth > scope.clientWidth;
+    const outOfBoundsY = scopeY + contextmenu.clientHeight > scope.clientHeight;
+
+    let normalizeX = mouseX;
+    let normalizeY = mouseY;
+
+    if (outOfBoundsX) {
+      normalizeX = scopeOffsetx + scope.clientWidth - contextmenu.clientWidth;
+    }
+
+    if (outOfBoundsY) {
+      normalizeY = scopeOffsety + scope.clientHeight - contextmenu.clientHeight;
+    }
+
+    return { normalizeX, normalizeY };
+  };
+}
 
 body.addEventListener("click", (e) => {
   if (e.target.offsetParent !== contextmenu) {
+    e.preventDefault();
     contextmenu.classList.remove("visible");
   }
 });
 
 body.addEventListener("contextmenu", (e) => {
   e.preventDefault();
-});
-
-//keep context menu on screen
-const normalizePosition = (mouseX, mouseY) => {
-  const { left: scopeOffsetx, top: scopeOffsety } =
-    scope[0].getBoundingClientRect();
-
-  const scopeX = mouseX - scopeOffsetx;
-  const scopeY = mouseY - scopeOffsety;
-
-  const outOfBoundsX = scopeX + contextmenu.clientWidth > scope.clientWidth;
-  const outOfBoundsY = scopeY + contextmenu.clientHeight > scope.clientHeight;
-
-  let normalizeX = mouseX;
-  let normalizeY = mouseY;
-
-  if (outOfBoundsX) {
-    normalizeX = scopeOffsetx + scope.clientWidth - contextmenu.clientWidth;
-  }
-
-  if (outOfBoundsY) {
-    normalizeY = scopeOffsety + scope.clientHeight - contextmenu.clientHeight;
-  }
-
-  return { normalizeX, normalizeY };
-};
-
-scope[0].addEventListener("contextmenu", (e) => {
-  e.preventDefault();
-
-  const { clientX: mouseX, clientY: mouseY } = e;
-
-  const { normalizeY } = normalizePosition(mouseX, mouseY);
-
-  contextmenu.style.top = `${normalizeY}px`;
-
-  contextmenu.classList.remove("visible");
-
-  setTimeout(() => {
-    contextmenu.classList.add("visible");
-  });
 });
