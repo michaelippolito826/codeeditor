@@ -1,6 +1,7 @@
 # Code Editor
 
-Simple code text editor that uses Ace.js (editor) and Toastify.js (notification)
+Simple code text editor that uses Ace.js (editor) and Toastify.js (notification)  
+https://michaelippolito826.github.io/codeeditor/
 
 ## Usage
 
